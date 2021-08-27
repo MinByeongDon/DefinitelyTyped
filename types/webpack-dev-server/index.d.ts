@@ -251,7 +251,7 @@ declare namespace WebpackDevServer {
          * This options allows to configure options for serving static files
          * from directory (by default 'public' directory).
          */
-        static?: boolean | Static | undefined;
+        static?: boolean | string | Static | Array<string | Static> | undefined;
         /**
          * This option allows you to configure list of globs/directories/files
          * to watch for file changes.
@@ -283,6 +283,11 @@ declare class WebpackDevServer {
     constructor(config: WebpackDevServer.Configuration, webpack?: webpack.Compiler | webpack.MultiCompiler);
 
     /**
+     * @deprecated - use `options` as the first argument and `compiler` as the second argument.
+     */
+    constructor(webpack: webpack.Compiler | webpack.MultiCompiler, config?: WebpackDevServer.Configuration);
+
+    /**
      * @deprecated - use `startCallback` or `start` instead
      */
     listen(port: number, hostname: string, callback?: (error?: Error) => void): http.Server;
@@ -298,12 +303,12 @@ declare class WebpackDevServer {
     close(callback?: () => void): void;
 
     /** @async */
-    start(): void;
+    start(): Promise<void>;
 
     startCallback(callback: () => void): void;
 
     /** @async */
-    stop(): void;
+    stop(): Promise<void>;
 
     stopCallback(callback: () => void): void;
 

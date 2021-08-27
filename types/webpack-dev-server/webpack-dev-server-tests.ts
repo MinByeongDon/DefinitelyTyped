@@ -18,7 +18,9 @@ let server = new WebpackDevServer(
     },
     compiler,
 );
-server.start();
+(async () => {
+    await server.start();
+})();
 
 // Configuration can be used as a type
 const config: WebpackDevServer.Configuration = {
@@ -165,6 +167,8 @@ const c3: WebpackDevServer.Configuration = {
     host: '127.0.0.1',
     port: 8080,
 
+    static: '/path/to/directory',
+
     devMiddleware: {
         stats: 'verbose',
     },
@@ -173,6 +177,8 @@ const c4: WebpackDevServer.Configuration = {
     // Host and port are required options to correct work.
     host: 'localhost',
     port: 8080,
+
+    static: ['/path/to/directory', '/path/to/another-directory'],
 
     devMiddleware: {
         writeToDisk: (filePath: string) => true,
@@ -215,7 +221,13 @@ const c6: WebpackDevServer.Configuration = {
 
 // API example
 server = new WebpackDevServer(config, compiler);
-server.start();
+
+// test deprecated constructor
+server = new WebpackDevServer(compiler, config);
+
+(async () => {
+    await server.start();
+})();
 
 // test the socket writer
 server.sendMessage(server.sockets, 'type1');
